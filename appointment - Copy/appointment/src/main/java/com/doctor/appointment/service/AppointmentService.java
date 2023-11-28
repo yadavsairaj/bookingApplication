@@ -83,7 +83,8 @@ public class AppointmentService {
             Doctor doctor = optionalDoctor.get();
             List<String> doctorSchedule = getDoctorSchedule(doctor);
             List<String> bookedSlots = getBookedSlots(id, appointmentDateTime);
-            List<String> availableSlots = new ArrayList<>(doctorSchedule);
+            List<String> availableSlots = doctorSchedule.stream().filter(slot -> !bookedSlots.contains(slot)).map(slot -> appointmentDateTime.with(LocalTime.parse(slot)).toString()).collect(Collectors.toList());
+            //List<String> availableSlots = new ArrayList<>(doctorSchedule);
             availableSlots.removeAll(bookedSlots);
 
             //logging
@@ -117,7 +118,7 @@ public class AppointmentService {
 
             if(availableSlots.contains(formattedDateTime)){
                 //System.out.println("******************THE available slot contains formatted time*************************");
-            //slot available, proceed with booking{not entering this if method}
+            
             patientRepository.save(patient);
 
             Appointment appointment = new Appointment();
