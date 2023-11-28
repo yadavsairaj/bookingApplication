@@ -63,21 +63,5 @@ public class PatientService {
         return null;
     }
 
-    public void bookAppointment(Long pid, Long did, LocalDateTime appointmentDateTime){
-        
-        Patient patient =  patientRepository.findById(pid).orElseThrow(()-> new ResourceNotFoundException("Patient not found with id: " + pid));
-        Doctor doctor = doctorRepository.findById(did).orElseThrow(()-> new ResourceNotFoundException("Doctor Not Found with id: " + did));
-
-        Appointment appointment = new Appointment();
-        appointment.setPatient(patient);
- 
-
-        appointmentRepository.save(appointment);
-
-        sendConfirmationEmail(patient.getEmail(), "Appointment booked succesfully");
-        }
     
-    private void sendConfirmationEmail(String email, String message){
-        System.out.println("Email sent to" + email + " with message" + message);
-    }
 }
